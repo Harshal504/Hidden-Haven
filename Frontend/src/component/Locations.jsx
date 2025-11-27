@@ -2,6 +2,25 @@ import React, { useState, useEffect } from 'react';
 import LocationService from '../service/LocationService';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// --- 1. LEAFLET IMPORTS ---
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+// --- 2. LEAFLET ICON FIX ---
+// (React-Leaflet has a bug where default icons don't show up, this fixes it)
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+
+let DefaultIcon = L.icon({
+    iconUrl: icon,
+    shadowUrl: iconShadow,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41]
+});
+L.Marker.prototype.options.icon = DefaultIcon;
+// ---------------------------
+
 const Locations = () => {
     // --- STATE ---
     const [locations, setLocations] = useState([]);
@@ -51,7 +70,6 @@ const Locations = () => {
     const uniqueCategories = ['All', ...new Set(locations.map(loc => loc.category))];
     const uniqueStates = ['All', ...new Set(locations.map(loc => loc.state))];
 
-
     // --- MODAL HANDLERS ---
     const handleViewClick = (location) => {
         setSelectedLocation(location);
@@ -84,7 +102,6 @@ const Locations = () => {
             
             {/* --- FILTER SECTION --- */}
             <div className="row mb-4 p-3 bg-light rounded shadow-sm">
-                {/* ... filters remain the same ... */}
                 <div className="col-md-5">
                     <label className="fw-bold mb-1">Filter by Category:</label>
                     <select className="form-select" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
@@ -106,12 +123,10 @@ const Locations = () => {
             <div className="row">
                 {filteredLocations.length > 0 ? (
                     filteredLocations.map((loc) => (
-                        // Changed col-md-4 to col-12 for full width
                         <div className="col-12 my-3" key={loc.id}>
-                            {/* Added d-flex flex-row to make card horizontal */}
                             <div className="card shadow-sm border-0 d-flex flex-row overflow-hidden" style={{ height: '220px' }}>
                                 
-                                {/* Image container with fixed width */}
+                                {/* Image container */}
                                 <div style={{ width: '35%', minWidth: '200px' }}>
                                     <img 
                                         src={loc.imageUrl} 
@@ -159,7 +174,7 @@ const Locations = () => {
                 )}
             </div>
 
-            {/* --- MODAL (Unchanged) --- */}
+            {/* --- MODAL (POPUP) FOR DETAILS --- */}
             {showModal && selectedLocation && (
                 <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} tabIndex="-1">
                     <div className="modal-dialog modal-lg modal-dialog-centered">
@@ -168,24 +183,69 @@ const Locations = () => {
                                 <h5 className="modal-title fw-bold">{selectedLocation.title}</h5>
                                 <button type="button" className="btn-close" onClick={handleCloseModal}></button>
                             </div>
+                            
                             <div className="modal-body">
                                 <div className="row">
+                                    {/* Left Side: Image */}
                                     <div className="col-md-6 mb-3">
-                                        <img src={selectedLocation.imageUrl} className="img-fluid rounded shadow-sm" alt={selectedLocation.title} style={{ width: '100%', height: '300px', objectFit: 'cover' }} onError={(e) => { e.target.src = 'https://via.placeholder.com/300x200?text=No+Image'; }} />
+                                        <img 
+                                            src={selectedLocation.imageUrl} 
+                                            className="img-fluid rounded shadow-sm" 
+                                            alt={selectedLocation.title} 
+                                            style={{ width: '100%', height: '300px', objectFit: 'cover' }}
+                                            onError={(e) => { e.target.src = 'https://via.placeholder.com/300x200?text=No+Image'; }}
+                                        />
                                     </div>
+                                    
+                                    {/* Right Side: Info & Map */}
                                     <div className="col-md-6">
                                         <span className="badge bg-secondary mb-3">{selectedLocation.category}</span>
+                                        
                                         <h6 className="fw-bold mt-2">Description</h6>
-                                        <p className="text-muted">{selectedLocation.description}</p>
+                                        <p className="text-muted" style={{ fontSize: '0.95rem' }}>
+                                            {selectedLocation.description}
+                                        </p>
+
                                         <h6 className="fw-bold">Address</h6>
-                                        <p className="text-muted mb-2"><i className="fas fa-map-marker-alt me-2 text-danger"></i>{selectedLocation.address}, {selectedLocation.city}, {selectedLocation.state}</p>
-                                        <div className="bg-light p-2 rounded border mb-3"><small className="d-block"><strong>Latitude:</strong> {selectedLocation.latitude}</small><small className="d-block"><strong>Longitude:</strong> {selectedLocation.longitude}</small></div>
+                                        <p className="text-muted mb-2">
+                                            <i className="fas fa-map-marker-alt me-2 text-danger"></i>
+                                            {selectedLocation.address}, {selectedLocation.city}, {selectedLocation.state}
+                                        </p>
+
+                                        {/* --- 3. LEAFLET MAP CONTAINER --- */}
+                                        <div className="border rounded overflow-hidden mb-3" style={{ height: '250px' }}>
+                                            <MapContainer 
+                                                center={[selectedLocation.latitude, selectedLocation.longitude]} 
+                                                zoom={13} 
+                                                style={{ height: '100%', width: '100%' }}
+                                            >
+                                                <TileLayer
+                                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                                />
+                                                <Marker position={[selectedLocation.latitude, selectedLocation.longitude]}>
+                                                    <Popup>
+                                                        {selectedLocation.title}
+                                                    </Popup>
+                                                </Marker>
+                                            </MapContainer>
+                                        </div>
+                                        {/* -------------------------------- */}
+                                        
+                                        <div className="alert alert-info p-2 mb-0">
+                                            <strong>Average Rating: </strong> {selectedLocation.averageRating || 0} / 5 Stars
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Close</button>
-                                <button type="button" className="btn btn-primary">See Reviews</button>
+                                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>
+                                    Close
+                                </button>
+                                <button type="button" className="btn btn-primary">
+                                    See Reviews
+                                </button>
                             </div>
                         </div>
                     </div>
