@@ -9,8 +9,8 @@ import Footer from './component/Footer';
 
 // Page Components
 // import Home from './component/Home';
-// import Login from './component/Login';
-// import Register from './component/Register';
+import Login from './component/Login';
+import Register from './component/Register';
 // import AboutUs from './component/AboutUs';
 // import ContactUs from './component/ContactUs';
 import Locations from './component/Locations';
@@ -18,8 +18,8 @@ import LocationsEdit from './component/LocationsEdit';
 // import Feedback from './component/Feedback';
 
 // // Dashboard Components
-// import AdminDashboard from './component/AdminDashboard';
-// import ViewerDashboard from './component/ViewerDashboard';
+import AdminDashboard from './component/AdminDashboard';
+import ViewerDashboard from './component/ViewerDashboard';
 
 function App() {
   return (
@@ -43,8 +43,8 @@ function App() {
             {/* <Route path="/" element={<Home />} /> */}
             {/* <Route path="/about" element={<AboutUs />} /> */}
             {/* <Route path="/contact" element={<ContactUs />} /> */}
-            {/* <Route path="/login" element={<Login />} /> */}
-            {/* <Route path="/register" element={<Register />} /> */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             
             {/* Location Routes */}
             <Route path="/locations" element={<Locations />} />
@@ -55,10 +55,10 @@ function App() {
               to check if the user is logged in) 
             */}
             {/* <Route path="/feedback" element={<Feedback />} /> */}
-            {/* <Route path="/viewer-dashboard" element={<ViewerDashboard />} /> */}
+            <Route path="/viewer-dashboard" element={<ViewerDashboard />} />
             
             {/* Admin Routes */}
-            {/* <Route path="/admin-dashboard" element={<AdminDashboard />} /> */}
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
             {/* Assuming Edit takes an ID parameter */}
             {/* <Route path="/locations/edit/:id" element={<LocationsEdit />} /> */}
 

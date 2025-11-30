@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const API_URL = "http://localhost:8080/location";
+const REVIEW_API_URL = "http://localhost:8080/reviews";
 
 class LocationService {
     
@@ -22,6 +23,15 @@ class LocationService {
     // 4. DELETE
     deleteLocation(id) {
         return axios.delete(`${API_URL}/${id}`);
+    }
+
+    getReviewsByLocationId(locationId) {
+        return axios.get(`${REVIEW_API_URL}/location/${locationId}`);
+    }
+
+    addReview(reviewData) {
+        // reviewData should look like: { rating: 5, comment: "...", userId: 1, locationId: 5 }
+        return axios.post(REVIEW_API_URL, reviewData);
     }
 }
 
