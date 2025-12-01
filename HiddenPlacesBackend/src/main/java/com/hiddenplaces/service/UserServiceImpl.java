@@ -51,4 +51,53 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.save(newUser);
     }
+    @Override
+    public List<ViewerDTO> getAllViewers() {
+        return userRepository.findAll().stream()
+                .filter(user -> user.getRole() == Role.VIEWER)  // Only get viewers
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+    
+
+    private ViewerDTO mapToDTO(User user) {
+        ViewerDTO dto = new ViewerDTO();
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setEmail(user.getEmail());
+        dto.setPhone(user.getPhone());
+        dto.setRole(user.getRole());
+        return dto;
+    }
+	
+	@Override
+	public User getUserById(Long userId) {
+		return userRepository.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+	}
+	
+	  @Override
+	public String updateViewer(Long user_id,ViewerDTO dto,Role role) {
+		
+		User details=getUserById(user_id);
+		if(role == Role.ADMIN){
+		
+		details.setName(dto.getName());
+		//details.setRole(dto.getRole());  //admin setting another admin
+		userRepository.save(details);
+		return "VIEWER details updated.....";
+	}
+		throw new UnAuthorizedException("only admin can update viewer details");
+}
+	  
+	    @Override
+	public String deleteDetails(Long user_id,Role role) {
+	    	
+		if(userRepository.existsById(user_id) && role == Role.ADMIN) {
+			userRepository.deleteById(user_id);
+			return "Deleted User details....";
+		}
+		return "Invalid user id - can't delelte details !!!!!!!!!!";
+	}
+
 }
