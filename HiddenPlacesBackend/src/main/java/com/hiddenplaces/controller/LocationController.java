@@ -39,7 +39,7 @@ public class LocationController {
 	// 2. UPDATE (PUT)
     // Matches React: axios.put(`http://localhost:8080/location/${id}`, editFormData);
     @PutMapping("/{id}")
-    public ResponseEntity<LocationDTO> updateLocation(@PathVariable Long id, @RequestBody LocationDTO locationDTO) {
+    public ResponseEntity<LocationDTO> updateLocation(@PathVariable Long id, @RequestBody @Valid LocationDTO locationDTO) {
         LocationDTO updatedLocation = locationService.updateLocation(id, locationDTO);
         return ResponseEntity.ok(updatedLocation);
     }
