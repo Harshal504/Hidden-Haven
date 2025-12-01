@@ -1,9 +1,12 @@
 package com.hiddenplaces.service;
 
-
+import java.util.List;
 import com.hiddenplaces.dto.LoginRequest;
 import com.hiddenplaces.dto.RegisterRequest;
 import com.hiddenplaces.entity.User;
+import com.hiddenplaces.dto.ViewerDTO;
+import com.hiddenplaces.entity.Role;
+
 
 public interface UserService {
     
