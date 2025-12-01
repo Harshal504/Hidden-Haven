@@ -1,5 +1,7 @@
 package com.hiddenplaces.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import com.hiddenplaces.dto.LoginRequest;
 import com.hiddenplaces.dto.RegisterRequest;
 import com.hiddenplaces.entity.User;
@@ -9,6 +11,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder; // Import
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.hiddenplaces.dto.ViewerDTO;
+import com.hiddenplaces.entity.Role;
+
+import com.hiddenplaces.customException.ApiException;
+import com.hiddenplaces.customException.AuthenticationException;
+import com.hiddenplaces.customException.ResourceNotFoundException;
+import com.hiddenplaces.customException.UnAuthorizedException;
+
+
+
 
 @Service
 @Transactional
