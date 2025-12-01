@@ -1,0 +1,174 @@
+import React, { useState } from 'react';
+import { Container, Row, Col, Form, Button, Card, Modal, InputGroup } from 'react-bootstrap';
+
+const FeedbackForm = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        rating: '',
+        message: ''
+    });
+
+    const [showModal, setShowModal] = useState(false);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        console.log("Feedback Submitted:", formData);
+
+        setShowModal(true);
+
+        setFormData({
+            name: '',
+            email: '',
+            rating: '',
+            message: ''
+        });
+    };
+
+    return (
+        <div style={{ background: 'linear-gradient(to right, #eef2f3, #98c19fff)', minHeight: '100vh', padding: '40px 0' }}>
+            <Container>
+                <Row className="justify-content-center">
+                    <Col md={8} lg={6}>
+                        <Card className="shadow-lg border-0 rounded-4" style={{ background: 'rgba(255, 255, 255, 0.95)' }}>
+                            <Card.Body className="p-5">
+                                <div className="text-center mb-4">
+                                    <i className="fas fa-comment-dots text-warning" style={{ fontSize: '3rem' }}></i>
+                                    <h2 className="fw-bold mt-3 text-warning">Feedback</h2>
+                                    <p className="text-muted">
+                                        Your feedback helps us improve HiddenPlaces.
+                                    </p>
+                                </div>
+
+                                <Form onSubmit={handleSubmit}>
+
+                                    {/* Name (Optional) */}
+                                    <Form.Group className="mb-3">
+                                        <Form.Label className="fw-semibold">Name</Form.Label>
+                                        <InputGroup>
+                                            <InputGroup.Text className="bg-white border-end-0">
+                                                <i className="fas fa-user text-muted"></i>
+                                            </InputGroup.Text>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Enter your name"
+                                                name="name"
+                                                value={formData.name}
+                                                onChange={handleChange}
+                                                className="border-start-0 ps-0"
+                                            />
+                                        </InputGroup>
+                                    </Form.Group>
+
+                                    {/* Email (Optional) */}
+                                    <Form.Group className="mb-3">
+                                        <Form.Label className="fw-semibold">Email</Form.Label>
+                                        <InputGroup>
+                                            <InputGroup.Text className="bg-white border-end-0">
+                                                <i className="fas fa-envelope text-muted"></i>
+                                            </InputGroup.Text>
+                                            <Form.Control
+                                                type="email"
+                                                placeholder="Enter email"
+                                                name="email"
+                                                value={formData.email}
+                                                onChange={handleChange}
+                                                className="border-start-0 ps-0"
+                                            />
+                                        </InputGroup>
+                                    </Form.Group>
+
+                                    {/* Rating */}
+                                    <Form.Group className="mb-3">
+                                        <Form.Label className="fw-semibold">Rating</Form.Label>
+                                        <InputGroup>
+                                            <InputGroup.Text className="bg-white border-end-0">
+                                                <i className="fas fa-star text-warning"></i>
+                                            </InputGroup.Text>
+                                            <Form.Select
+                                                name="rating"
+                                                value={formData.rating}
+                                                onChange={handleChange}
+                                                required
+                                                className="border-start-0 ps-0"
+                                            >
+                                                <option value="">Select rating</option>
+                                                <option value="5">⭐⭐⭐⭐⭐ - Excellent</option>
+                                                <option value="4">⭐⭐⭐⭐ - Very Good</option>
+                                                <option value="3">⭐⭐⭐ - Good</option>
+                                                <option value="2">⭐⭐ - Average</option>
+                                                <option value="1">⭐ - Poor</option>
+                                            </Form.Select>
+                                        </InputGroup>
+                                    </Form.Group>
+
+                                    {/* Message */}
+                                    <Form.Group className="mb-4">
+                                        <Form.Label className="fw-semibold">Your Feedback</Form.Label>
+                                        <InputGroup>
+                                            <InputGroup.Text className="bg-white border-end-0 align-items-start pt-2">
+                                                <i className="fas fa-pencil-alt text-muted"></i>
+                                            </InputGroup.Text>
+                                            <Form.Control
+                                                as="textarea"
+                                                rows={5}
+                                                placeholder="Share your experience..."
+                                                name="message"
+                                                value={formData.message}
+                                                onChange={handleChange}
+                                                required
+                                                style={{ resize: 'none' }}
+                                                className="border-start-0 ps-0"
+                                            />
+                                        </InputGroup>
+                                    </Form.Group>
+
+                                    {/* Submit Button */}
+                                    <div className="d-grid">
+                                        <Button variant="badge bg-success" type="submit" size="lg" className="fw-bold rounded-pill shadow-sm text-white">
+                                            <i className="fas fa-paper-plane me-2"></i> Submit Feedback
+                                        </Button>
+                                    </div>
+
+                                </Form>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+
+                {/* Success Modal */}
+                <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+                    <Modal.Header closeButton className="border-0 pb-0"></Modal.Header>
+                    <Modal.Body className="text-center pt-0 pb-4">
+                        <div className="mb-3">
+                            <i className="fas fa-check-circle text-success" style={{ fontSize: '4rem' }}></i>
+                        </div>
+                        <h3 className="fw-bold text-success">Thank You!</h3>
+                        <p className="text-muted">
+                            Your feedback has been submitted successfully.
+                        </p>
+                        <Button
+                            variant="success"
+                            onClick={() => setShowModal(false)}
+                            className="px-5 mt-3 rounded-pill fw-bold shadow-sm"
+                        >
+                            Close
+                        </Button>
+                    </Modal.Body>
+                </Modal>
+
+            </Container>
+        </div>
+    );
+};
+
+export default FeedbackForm;
