@@ -8,11 +8,11 @@ import Navigation from './component/Navigation';
 import Footer from './component/Footer';
 
 // Page Components
-// import Home from './component/Home';
+import Home from './component/Home';
 import Login from './component/Login';
 import Register from './component/Register';
-// import AboutUs from './component/AboutUs';
-// import ContactUs from './component/ContactUs';
+import AboutUs from './component/AboutUs';
+import ContactUs from './component/ContactUs';
 import Locations from './component/Locations';
 import LocationsEdit from './component/LocationsEdit';
 // import Feedback from './component/Feedback';
@@ -40,9 +40,9 @@ function App() {
         <div className="container mt-4 flex-grow-1">
           <Routes>
             {/* Public Routes */}
-            {/* <Route path="/" element={<Home />} /> */}
-            {/* <Route path="/about" element={<AboutUs />} /> */}
-            {/* <Route path="/contact" element={<ContactUs />} /> */}
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/contact" element={<ContactUs />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             

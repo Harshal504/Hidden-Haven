@@ -4,11 +4,9 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 const Navigation = () => {
     const navigate = useNavigate();
 
-    // -----------------------------------------------------------
-    // Checking localStorage to simulate logged-in state
+    // 1. Get User Data
     const userString = localStorage.getItem('user');
     const user = userString ? JSON.parse(userString) : null;
-    // -----------------------------------------------------------
 
     const handleLogout = () => {
         localStorage.removeItem('user');
@@ -24,29 +22,15 @@ const Navigation = () => {
                     🌍 Hidden Places
                 </Link>
                 
-                <button 
-                    className="navbar-toggler" 
-                    type="button" 
-                    data-bs-toggle="collapse" 
-                    data-bs-target="#navbarNav"
-                >
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span className="navbar-toggler-icon"></span>
                 </button>
 
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        {/* ALL LINKS ARE NOW PUBLIC */}
+                        {/* --- PUBLIC LINKS (Always Visible) --- */}
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/">Home</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/locations">Explore Locations</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/locations/edit">Locations Edit</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/feedback">Give Feedback</NavLink>
                         </li>
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/about">About Us</NavLink>
@@ -54,11 +38,39 @@ const Navigation = () => {
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/contact">Contact</NavLink>
                         </li>
+
+                        {/* --- VIEWER & ADMIN SHARED LINKS (Must be logged in) --- */}
+                        {user && user.role === 'VIEWER' && (
+                            <>
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to="/locations">Explore Locations</NavLink>
+                                </li>
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to="/feedback">Give Feedback</NavLink>
+                                </li>
+                            </>
+                        )}
+
+                        {/* --- ADMIN ONLY LINKS --- */}
+                        {user && user.role === 'ADMIN' && (
+                            <>
+                                <li className="nav-item">
+                                    <NavLink className="nav-link text-warning" to="/locations/edit">
+                                        Manage Locations
+                                    </NavLink>
+                                </li>
+                                <li className="nav-item">
+                                    <NavLink className="nav-link text-warning" to="/admin/users">
+                                        Manage Users
+                                    </NavLink>
+                                </li>
+                            </>
+                        )}
                     </ul>
 
                     <ul className="navbar-nav ms-auto">
                         {!user ? (
-                            // GUEST LINKS
+                            // --- GUEST LINKS ---
                             <>
                                 <li className="nav-item">
                                     <Link className="btn btn-outline-light me-2" to="/login">Login</Link>
@@ -68,12 +80,14 @@ const Navigation = () => {
                                 </li>
                             </>
                         ) : (
-                            // LOGGED IN LINKS
+                            // --- LOGGED IN USER ---
                             <>
-                                {/* Simple check: If admin, show admin dash, else viewer dash */}
                                 <li className="nav-item">
-                                    <NavLink className="nav-link text-warning" to={user.role === 'ADMIN' ? "/admin-dashboard" : "/viewer-dashboard"}>
-                                        {user.role === 'ADMIN' ? "Admin Panel" : "My Dashboard"}
+                                    <NavLink 
+                                        className="nav-link text-info" 
+                                        to={user.role === 'ADMIN' ? "/admin-dashboard" : "/viewer-dashboard"}
+                                    >
+                                        {user.role === 'ADMIN' ? "Admin Dashboard" : "My Dashboard"}
                                     </NavLink>
                                 </li>
                                 

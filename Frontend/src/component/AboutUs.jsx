@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container, Row, Col, Image, Card } from 'react-bootstrap';
+import { Container, Row, Col, Card, Image } from 'react-bootstrap'; // Added missing imports
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AboutUs = () => {
     const intro = `The Hidden Places is a community-driven platform built to help travelers
@@ -41,10 +42,7 @@ const AboutUs = () => {
         'The project was developed collaboratively from start to finish — from designing the database schema and defining the API structure to frontend integration, routing, and secure authentication. Each team member contributed equally to delivering a seamless full-stack application.';
 
     return (
-
-        <>
         <Container className="my-5">
-
             {/* Page Header */}
             <h2
                 className="text-center mb-4 fw-bold"
@@ -161,8 +159,6 @@ const AboutUs = () => {
                 {finalNote}
             </p>
         </Container>
-        <p>Hello Shreya</p>
-        </>
     );
 }
 
