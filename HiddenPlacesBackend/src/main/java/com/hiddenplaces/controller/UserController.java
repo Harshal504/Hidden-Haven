@@ -32,22 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 	private final UserService userService;
 	
-	@PostMapping("/signup")
-	public ResponseEntity<?> registerUser(@RequestBody @Valid UserRegDTO dto){
-		System.out.println("User registration" +dto);
-		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(userService.registerNewUser(dto));
-	}
-
 	
-	@PostMapping("/signup/signin")
-	public ResponseEntity<?> userAuthentication (@RequestBody @Valid AuthRequest dto){
-		System.out.println("sign in" +dto);
-		
-			return ResponseEntity.ok(userService.authenticate(dto));
-					
-		
-	}
 	
 	@GetMapping("/viewers")
     public ResponseEntity<List<ViewerDTO>> getAllViewers(
@@ -90,3 +75,4 @@ public class UserController {
 	
 
 }
+
