@@ -37,13 +37,11 @@ public class UserController {
 	
 	@GetMapping("/viewers")
     public ResponseEntity<List<ViewerDTO>> getAllViewers(
-            @AuthenticationPrincipal User currentUser) {
+            ) {
         
-       /* 
-        if (currentUser.getRole() != Role.ADMIN) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-        */
+       
+      
+        
         System.out.println("Get all viewers");
         return ResponseEntity.ok(userService.getAllViewers());
     }
