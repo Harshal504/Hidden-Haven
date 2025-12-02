@@ -14,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.hiddenplaces.dto.ViewerDTO;
 import com.hiddenplaces.entity.Role;
 
-import com.hiddenplaces.customException.ApiException;
-import com.hiddenplaces.customException.AuthenticationException;
-import com.hiddenplaces.customException.ResourceNotFoundException;
-import com.hiddenplaces.customException.UnAuthorizedException;
+//import com.hiddenplaces.exception.ApiException;
+//import com.hiddenplaces.exception.AuthenticationException;
+import com.hiddenplaces.exception.ResourceNotFoundException;
+//import com.hiddenplaces.exception.UnAuthorizedException;
 
 
 
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(details);
 		return "VIEWER details updated.....";
 	}
-		throw new UnAuthorizedException("only admin can update viewer details");
+		throw new RuntimeException("only admin can update viewer details");
 }
 	  
 	    @Override

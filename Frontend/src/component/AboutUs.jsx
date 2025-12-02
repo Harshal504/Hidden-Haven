@@ -15,26 +15,27 @@ const AboutUs = () => {
         'To become the largest digital platform for discovering authentic hidden travel destinations while promoting sustainable and responsible tourism.';
 
     const team = [
-        {
-            name: 'Shreya Raj',
-            image: '../assets/cdpms.jpg',
-            description:
-                'Shreya designed and implemented core frontend features using React, including the Home page, About Us page, Feedback form, and Reviews UI. She also collaborated on designing application routes, component structure, and styling. On the backend, she integrated the Spring Boot APIs with the frontend and contributed to authentication, validation, and data flow.',
-            github: 'https://github.com/shreyarajcmaug25-kh',
-        },
+        
         {
             name: 'Harshal Tarmale',
-            image: '/images/harshal.jpg',
+            image: 'src/assets/Harshal.jpeg',
             description:
-                'Harshal developed the backend entities, database integration, and API architecture using Spring Boot and Hibernate. He also contributed to securing the application using JWT authentication and implemented the Admin-side modules for managing locations, reviews, and user data.',
+                'Harshal developed the backend entities, database integration, and API architecture using Spring Boot and Hibernate. He was responsible for the development of Location based ui and backend. Hel also integrated individual codes in the application. He also contributed to securing the application using JWT authentication and implemented the Admin-side modules for managing locations, reviews, and user data.',
             github: 'https://github.com/Harshal504',
         },
         {
             name: 'Vaishnavi Jagtap',
-            image: '/images/rachana.jpg',
+            image: 'src/assets/vaishnavi.png',
             description:
-                'Vaishnavi created UI components for user interaction, including the Contact page, Login page, Register page, query submission modules, and feedback management. She also contributed to responsive UI design, layout styling, and system navigation to ensure a smooth user experience.',
+                'Vaishnavi created UI and backend for components for user interaction, including the Contact page, Login page, Register page, query submission modules, and feedback management. She also implemented custom exceptions. She also contributed to responsive UI design, layout styling, and system navigation to ensure a smooth user experience.',
             github: 'https://github.com/vaishnavijagtap3',
+        },
+        {
+            name: 'Shreya Raj',
+            image: 'src/assets/Shreya.png',
+            description:
+                'Shreya designed and implemented core frontend features using React, including the Home page, About Us page, Feedback form, and Reviews UI. She also collaborated on designing application routes, component structure, and styling. On the backend, she integrated the Spring Boot APIs with the frontend and contributed to authentication, validation, and data flow.',
+            github: 'https://github.com/shreyarajcmaug25-kh',
         },
     ];
 

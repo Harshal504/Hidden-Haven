@@ -15,11 +15,12 @@ import AboutUs from './component/AboutUs';
 import ContactUs from './component/ContactUs';
 import Locations from './component/Locations';
 import LocationsEdit from './component/LocationsEdit';
-// import Feedback from './component/Feedback';
+import Feedback from './component/Feedback';
 
 // // Dashboard Components
 import AdminDashboard from './component/AdminDashboard';
 import ViewerDashboard from './component/ViewerDashboard';
+import UserManagement from './component/UserManagement';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="/contact" element={<ContactUs />} />
+            <Route path="/feedback" element={<Feedback />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             
@@ -54,13 +56,15 @@ function App() {
               (In a real app, you would wrap these in a PrivateRoute component 
               to check if the user is logged in) 
             */}
-            {/* <Route path="/feedback" element={<Feedback />} /> */}
+
+            <Route path="/admin/users" element={<UserManagement />} />
+            
             <Route path="/viewer-dashboard" element={<ViewerDashboard />} />
             
             {/* Admin Routes */}
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
             {/* Assuming Edit takes an ID parameter */}
-            {/* <Route path="/locations/edit/:id" element={<LocationsEdit />} /> */}
+          
 
             {/* Catch-all for 404 (Optional) */}
             {/* <Route path="*" element={<div className="text-center mt-5"><h2>404 - Page Not Found</h2></div>} /> */}

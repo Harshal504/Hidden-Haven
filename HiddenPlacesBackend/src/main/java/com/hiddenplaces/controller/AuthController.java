@@ -7,6 +7,8 @@ import com.hiddenplaces.entity.User;
 import com.hiddenplaces.repository.UserRepository;
 import com.hiddenplaces.security.JwtUtils;
 import com.hiddenplaces.service.UserService;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

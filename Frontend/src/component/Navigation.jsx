@@ -1,15 +1,17 @@
 import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { getUser, removeUser } from '../Service/UserRoleService';
+import { removeToken } from '../Service/TokenService';
 
 const Navigation = () => {
     const navigate = useNavigate();
 
-    // 1. Get User Data
-    const userString = localStorage.getItem('user');
-    const user = userString ? JSON.parse(userString) : null;
+    // 1. Get User Data from Service
+    const user = getUser();
 
     const handleLogout = () => {
-        localStorage.removeItem('user');
+        removeUser();
+        removeToken();
         alert("Logged out successfully");
         navigate('/login');
         window.location.reload();
@@ -18,41 +20,46 @@ const Navigation = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
             <div className="container">
-                <Link className="navbar-brand fw-bold" to="/">
+                <Link className="navbar-brand fw-bold" to={user ? (user.role === 'ADMIN' ? "/admin-dashboard" : "/viewer-dashboard") : "/"}>
                     🌍 Hidden Places
                 </Link>
-
+                
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span className="navbar-toggler-icon"></span>
                 </button>
 
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        {/* --- PUBLIC LINKS (Always Visible) --- */}
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/">Home</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/about">About Us</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/feedback">Give Feedback</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/contact">Contact</NavLink>
-                        </li>
+                        
+                        {/* --- SCENARIO A: NOT LOGGED IN (Guest View) --- */}
+                        {!user && (
+                            <>
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to="/">Home</NavLink>
+                                </li>
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to="/about">About Us</NavLink>
+                                </li>
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to="/contact">Contact</NavLink>
+                                </li>
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to="/feedback">Give Feedback</NavLink>
+                                </li>
+                            </>
+                        )}
 
-                        {/* --- VIEWER & ADMIN SHARED LINKS (Must be logged in) --- */}
-                        {user && (
+                        {/* --- SCENARIO B: LOGGED IN (Common for Admin & Viewer) --- */}
+                        {user && user.role === 'VIEWER' &&(
                             <>
                                 <li className="nav-item">
                                     <NavLink className="nav-link" to="/locations">Explore Locations</NavLink>
                                 </li>
-
+                                
                             </>
                         )}
 
-                        {/* --- ADMIN ONLY LINKS --- */}
+                        {/* --- SCENARIO C: ADMIN ONLY --- */}
                         {user && user.role === 'ADMIN' && (
                             <>
                                 <li className="nav-item">
@@ -71,7 +78,7 @@ const Navigation = () => {
 
                     <ul className="navbar-nav ms-auto">
                         {!user ? (
-                            // --- GUEST LINKS ---
+                            // --- GUEST BUTTONS ---
                             <>
                                 <li className="nav-item">
                                     <Link className="btn btn-outline-light me-2" to="/login">Login</Link>
@@ -81,17 +88,17 @@ const Navigation = () => {
                                 </li>
                             </>
                         ) : (
-                            // --- LOGGED IN USER ---
+                            // --- LOGGED IN USER DROPDOWN ---
                             <>
                                 <li className="nav-item">
-                                    <NavLink
-                                        className="nav-link text-info"
+                                    <NavLink 
+                                        className="nav-link text-info me-2" 
                                         to={user.role === 'ADMIN' ? "/admin-dashboard" : "/viewer-dashboard"}
                                     >
                                         {user.role === 'ADMIN' ? "Admin Dashboard" : "My Dashboard"}
                                     </NavLink>
                                 </li>
-
+                                
                                 <li className="nav-item dropdown">
                                     <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                                         Hello, {user.name}
